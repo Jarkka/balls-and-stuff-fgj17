@@ -6,12 +6,23 @@ public class BoardController : MonoBehaviour {
 
 	float[] xLimits = new float[2] { -0.25f, 0.25f };
 
+	public bool enableVertical = false;
+
 	void Start () {
 		// Do da start
 	}
 
 	void FixedUpdate () {
-		float hor = Input.GetAxis ("Horizontal");
+		RotateFromInput ("Horizontal", -Vector3.forward);
+		if (!this.enableVertical) {
+			return;
+		}
+		RotateFromInput ("Vertical", -Vector3.left);
+	}
+
+	void RotateFromInput(string input, Vector3 axis) {
+
+		float hor = Input.GetAxis (input);
 		if (hor != 0) {
 			float doRotate = 0;
 			if (hor > 0 && gameObject.transform.localRotation.z < xLimits [1]) {
@@ -22,11 +33,11 @@ public class BoardController : MonoBehaviour {
 				doRotate = 1;
 			}
 
-			RotateBoard (hor * doRotate);
+			RotateBoard (hor * doRotate * axis);
 		}
 	}
 
-	void RotateBoard(float axisValue) {
-		transform.Rotate(Vector3.forward * axisValue);
+	void RotateBoard(Vector3 axisValue) {
+		transform.Rotate(axisValue);
 	}
 }

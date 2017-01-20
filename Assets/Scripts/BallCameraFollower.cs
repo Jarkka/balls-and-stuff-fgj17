@@ -24,7 +24,7 @@ public class BallCameraFollower : MonoBehaviour {
 		if (this.target == null)
 			return;
 		Vector3 newPos = this.transform.position;
-		newPos.z = target.position.z + difference;
+		newPos.z = newPos.z + ((target.position.z + difference) - newPos.z) * 0.1f;
 		this.transform.position = newPos;
 
 		if (Time.frameCount % 60 == 0)

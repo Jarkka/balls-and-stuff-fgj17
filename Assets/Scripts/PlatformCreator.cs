@@ -9,25 +9,27 @@ public class PlatformCreator : MonoBehaviour {
 	public int heightNumPieces = 10;
 	public Transform wallPrefab;
 
-	//[Range(0.0f, 100.0f)]
-	//public float holeProbability = 5;
+	[Range(0.0f, 1.0f)]
+	public float startHoleProbability = 0.5f;
+	public bool enableStartArea = true;
+	public bool centerAll = false;
 
 	private Transform[] platformPieces;
 
 	bool NotInStartArea(int x, int z) {
-		return z > 10;
+		return !enableStartArea || z > 10;
 	}
 
 	bool RandomHole(int z) {
 		float holeProbability = z * 1.0f / heightNumPieces;
-		return Random.Range (0.0f, 1.0f) < holeProbability * 0.1f;
+		return Random.Range (0.0f, 1.0f) < startHoleProbability + holeProbability * 0.1f;
 	}
 
 	// Use this for initialization
-	void Start () {
+	public void Start () {
 		Vector3 currentPosition = this.transform.position;
 		float startX = currentPosition.x - (widthNumPieces * 0.5f);
-		float startZ = currentPosition.z;
+		float startZ = centerAll ? currentPosition.z + (heightNumPieces * 0.5f) : currentPosition.z;
 		float yPos = currentPosition.y;
 			
 		for (int z = 0; z < heightNumPieces; z++) {
