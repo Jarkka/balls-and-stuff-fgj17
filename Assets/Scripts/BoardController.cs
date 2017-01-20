@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class BoardController : MonoBehaviour {
 
-	float[] xLimits = new float[2] { -0.1f, 0.1f };
+	float[] xLimits = new float[2] { -0.25f, 0.25f };
 
 	void Start () {
 		// Do da start
