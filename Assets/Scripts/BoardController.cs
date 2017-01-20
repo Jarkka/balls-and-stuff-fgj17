@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class BoardController : MonoBehaviour {
 
+	float[] xLimits = new float[2] { -0.1f, 0.1f };
+
 	void Start () {
 		// Do da start
 	}
@@ -11,10 +13,20 @@ public class BoardController : MonoBehaviour {
 	void FixedUpdate () {
 		float hor = Input.GetAxis ("Horizontal");
 		if (hor != 0) {
-			//Debug.Log (hor);
-			transform.Rotate(Vector3.forward * hor);
-		}
+			float doRotate = 0;
+			if (hor > 0 && gameObject.transform.localRotation.z < xLimits [1]) {
+				doRotate = 1;
+			}
 
-		Debug.Log (gameObject.transform.localRotation.z);
+			if (hor < 0 && gameObject.transform.localRotation.z > xLimits [0]) {
+				doRotate = 1;
+			}
+
+			RotateBoard (hor * doRotate);
+		}
+	}
+
+	void RotateBoard(float axisValue) {
+		transform.Rotate(Vector3.forward * axisValue);
 	}
 }
