@@ -97,7 +97,7 @@ public class PlatformCreator : MonoBehaviour {
 		} else {
 			newPiece = idlePieces [idlePieces.Count - 1];
 			idlePieces.RemoveAt(idlePieces.Count - 1);
-			newPiece.GetComponent<Renderer> ().enabled = true;
+			newPiece.GetComponentInChildren<Renderer> ().enabled = true;
 		}
 		renderedPieces.Add (newPiece);
 		return newPiece;
@@ -106,6 +106,6 @@ public class PlatformCreator : MonoBehaviour {
 	private void DestroyPiece(Transform piece) {
 		renderedPieces.Remove (piece);
 		idlePieces.Add (piece);
-		piece.GetComponent<Renderer> ().enabled = false;
+		piece.GetComponentInChildren<Renderer> ().enabled = false;
 	}
 }
