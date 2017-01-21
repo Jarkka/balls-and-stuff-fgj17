@@ -18,12 +18,12 @@ public class BoardController : MonoBehaviour {
 		if (!this.enableVertical) {
 			return;
 		}
-		RotateFromInput ("Vertical", Vector3.left);
+		RotateFromInput ("Vertical", -Vector3.left);
 	}
 
 	void RotateFromInput(string input, Vector3 axis) {
 
-		float hor = -Input.GetAxis (input);
+		float hor = Input.GetAxis (input);
 		if (hor != 0) {
 			float doRotate = 0;
 			if (hor > 0 && gameObject.transform.localRotation.z < xLimits [1]) {
