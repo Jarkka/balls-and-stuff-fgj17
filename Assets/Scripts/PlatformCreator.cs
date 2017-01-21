@@ -14,6 +14,13 @@ public class PlatformCreator : MonoBehaviour {
 	private int currentOffset = 0;
 	private int renderedUntil = -1;
 
+	public void Start () {
+		transform.localEulerAngles = Vector3.forward * 0.5f; // Fixes flickering in the start
+		InvokeRepeating ("ResetCameraPosition", 0.3f, 0.3f);
+		RenderPlatformPieces (0, renderFloorForwardPieces);
+	}
+
+	// Determine if hole or not
 	bool NotInStartArea(int x, int z) {
 		return z > 10;
 	}
@@ -22,12 +29,7 @@ public class PlatformCreator : MonoBehaviour {
 		return Random.Range (0.0f, 1.0f) < z * 0.001f;
 	}
 
-	public void Start () {
-		transform.localEulerAngles = Vector3.forward * 0.5f; // Fixes flickering in the start
-		InvokeRepeating ("ResetCameraPosition", 0.3f, 0.3f);
-		RenderPlatformPieces (0, renderFloorForwardPieces);
-	}
-
+	// Render new pieces for the platform
 	public void RenderPlatformPieces(int from, int to) {
 		Vector3 currentPosition = this.transform.position;
 		float startX = currentPosition.x - (floorWidthPieces * 0.5f);
@@ -49,6 +51,7 @@ public class PlatformCreator : MonoBehaviour {
 		}
 	}
 
+	// Nudge everything a bit backwards to avoid float losing precision
 	public void ResetCameraPosition() {
 		Transform cameraTransform = Camera.main.transform;
 		int offset = Mathf.FloorToInt (cameraTransform.position.z);
@@ -58,6 +61,7 @@ public class PlatformCreator : MonoBehaviour {
 
 		currentOffset += offset;
 
+		// Nudge everything but the platform
 		Transform[] allObjects = FindObjectsOfType<Transform> ();
 		foreach (Transform t in allObjects) {
 			if (t.parent != null || t == transform) {
@@ -68,25 +72,23 @@ public class PlatformCreator : MonoBehaviour {
 			newPos.z -= offset;
 			t.position = newPos;
 		}
-			
+
+		// Nudge pieces in platform
 		List<Transform> toDelete = new List<Transform> ();
-		foreach (Transform t in renderedPieces) {
+		foreach (Transform t in renderedPieces.ToArray()) {
 			Vector3 newPos = t.localPosition;
 			newPos.z -= offset;
 			t.localPosition = newPos;
 
-			if (t.position.z > 3) {
-				toDelete.Add(t);
+			if (t.position.z > 0) {
+				DestroyPiece (t);
 			}
-		}
-
-		foreach (Transform t in toDelete) {
-			DestroyPiece (t);
 		}
 
 		RenderPlatformPieces (-currentOffset, -currentOffset + renderFloorForwardPieces);
 	}
 
+	// Single piece lifecycle, should probaly refactor these to their own objet at some point
 	private Transform GetNewPiece() {
 		Transform newPiece;
 
