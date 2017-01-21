@@ -11,6 +11,8 @@ public class PlatformCreator : MonoBehaviour {
 
 	public bool guardFloat = false;
 
+	public UnityEngine.UI.Text pointsText;
+
 	private List<Transform> renderedPieces = new List<Transform>();
 	private List<Transform> idlePieces = new List<Transform>();
 	private int currentOffset = 0;
@@ -63,6 +65,8 @@ public class PlatformCreator : MonoBehaviour {
 		}
 
 		currentOffset = guardFloat ? currentOffset + offset : offset;
+
+		pointsText.text = currentOffset * -17 + " points";
 
 		if (guardFloat) {
 			// Nudge everything but the platform
