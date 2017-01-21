@@ -23,6 +23,7 @@ public class PlatformCreator : MonoBehaviour {
 	}
 
 	public void Start () {
+		transform.localEulerAngles = Vector3.forward * 0.5f; // Fixes flickering in the start
 		InvokeRepeating ("ResetCameraPosition", 0.3f, 0.3f);
 		RenderPlatformPieces (0, renderFloorForwardPieces);
 	}
