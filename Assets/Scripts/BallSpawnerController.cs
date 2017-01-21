@@ -6,16 +6,17 @@ public class BallSpawnerController : MonoBehaviour {
 
 	public int spawnedBallAmount = 0;
 	public GameObject ballPrefab;
+	public GameObject model;
 
 	private List<Vector3> reservedPositions = new List<Vector3>();
 	private float margin = 1f;
 
 	// Use this for initialization
 	void Start () {
-		gameObject.GetComponent<MeshRenderer> ().enabled = false;
+		model.GetComponent<MeshRenderer> ().enabled = false;
 
 		for (int i = 0; i < spawnedBallAmount; i++) {
-			GameObject newBall = Instantiate (ballPrefab, GetRandomVector3InsideModel (), ballPrefab.transform.rotation) as GameObject;
+			Instantiate (ballPrefab, GetRandomVector3InsideModel (), ballPrefab.transform.rotation, transform);
 		}
 	}
 	
@@ -25,11 +26,11 @@ public class BallSpawnerController : MonoBehaviour {
 		float[] zAxis = new float[2] {0,0};
 		List<Vector3> points = new List<Vector3>();
 
-		Mesh myMesh = gameObject.GetComponent<MeshFilter>().mesh;
+		Mesh myMesh = model.GetComponent<MeshFilter>().mesh;
 
 		for (var i = 0; i < myMesh.vertices.Length; i++) {
-			Vector3 worldPosition = transform.TransformPoint (myMesh.vertices [i]);
-			Vector3 vector = new Vector3 (worldPosition.x - transform.position.x, worldPosition.y - transform.position.y, worldPosition.z - transform.position.z);
+			Vector3 worldPosition = model.transform.TransformPoint (myMesh.vertices [i]);
+			Vector3 vector = new Vector3 (worldPosition.x - model.transform.position.x, worldPosition.y - model.transform.position.y, worldPosition.z - model.transform.position.z);
 
 			if (vector.x < xAxis[0]) {
 				xAxis [0] = vector.x;
@@ -50,7 +51,7 @@ public class BallSpawnerController : MonoBehaviour {
 			}
 		}
 
-		Vector3 randomPointWithLimits = transform.position - GetRandomPositionWithLimits (points, xAxis, yAxis, zAxis); 
+		Vector3 randomPointWithLimits = model.transform.position - GetRandomPositionWithLimits (points, xAxis, yAxis, zAxis); 
 
 		return randomPointWithLimits;
 	}
