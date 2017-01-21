@@ -78,7 +78,7 @@ public class PlatformCreator : MonoBehaviour {
 
 		currentOffset = guardFloat ? currentOffset + offset : offset;
 
-		pointsText.text = currentOffset * -17 + " points";
+		pointsText.text = currentOffset * -17 + "";
 
 		if (guardFloat) {
 			// Nudge everything but the platform
