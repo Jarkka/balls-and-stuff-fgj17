@@ -10,6 +10,7 @@ public class PlatformCreator : MonoBehaviour {
 	public int renderFloorForwardPieces = 50;
 
 	public bool guardFloat = false;
+	public bool noHoles = false;
 
 	public UnityEngine.UI.Text pointsText;
 
@@ -30,7 +31,7 @@ public class PlatformCreator : MonoBehaviour {
 	}
 
 	bool RandomHole(int z) {
-		return Random.Range (0.0f, 1.0f) < z * 0.001f;
+		return !noHoles && Random.Range (0.0f, 1.0f) < z * 0.001f;
 	}
 
 	// Render new pieces for the platform
