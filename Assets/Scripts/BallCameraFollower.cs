@@ -31,7 +31,7 @@ public class BallCameraFollower : MonoBehaviour {
 			Vector3 newPos = target.position + startPosition;
 			newPos.y = startPosition.y;
 			newPos.x = startPosition.x;
-			transform.position = Vector3.Lerp(transform.position, newPos, Time.deltaTime * 2f);
+			transform.position = newPos;
 
 			if (Time.frameCount % 60 == 0)
 				FindLeadingBall ();
