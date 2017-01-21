@@ -40,7 +40,7 @@ public class PlatformCreator : MonoBehaviour {
 		float startZ = currentPosition.z;
 		float yPos = currentPosition.y;
 
-		for (int z = Mathf.Max(renderedUntil+1, from); z < to; z++) {
+		for (int z = Mathf.Max(renderedUntil + 1, from); z < to; z++) {
 			for (int x = 0; x < floorWidthPieces; x++) {
 				if (NotInStartArea (x, z) && RandomHole (z)) {
 					continue;
@@ -48,6 +48,17 @@ public class PlatformCreator : MonoBehaviour {
 
 				Transform newPiece = GetNewPiece();
 				newPiece.SetParent (this.transform);
+
+				PlatformPieceController platformPieceController = newPiece.gameObject.GetComponent<PlatformPieceController> ();
+		
+				if (x == 0) {
+					platformPieceController.ActivateLight (PlatformLight.Left);
+				} else if (x == floorWidthPieces - 1) {
+					platformPieceController.ActivateLight (PlatformLight.Right);
+				} else {
+					platformPieceController.ResetLights ();
+				}
+
 				int guardFloatOffset = guardFloat ? currentOffset : 0;
 				newPiece.localPosition = new Vector3 (startX + x, yPos, startZ - z - guardFloatOffset);
 				newPiece.localRotation = Quaternion.identity;
