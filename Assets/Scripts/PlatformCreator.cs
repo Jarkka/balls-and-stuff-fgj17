@@ -9,6 +9,8 @@ public class PlatformCreator : MonoBehaviour {
 	public int floorWidthPieces = 10;
 	public int renderFloorForwardPieces = 50;
 
+	public bool guardFloat = false;
+
 	private List<Transform> renderedPieces = new List<Transform>();
 	private List<Transform> idlePieces = new List<Transform>();
 	private int currentOffset = 0;
@@ -44,7 +46,8 @@ public class PlatformCreator : MonoBehaviour {
 
 				Transform newPiece = GetNewPiece();
 				newPiece.SetParent (this.transform);
-				newPiece.localPosition = new Vector3 (startX + x, yPos, startZ - z - currentOffset);
+				int guardFloatOffset = guardFloat ? currentOffset : 0;
+				newPiece.localPosition = new Vector3 (startX + x, yPos, startZ - z - guardFloatOffset);
 				newPiece.localRotation = Quaternion.identity;
 			}
 			renderedUntil = z;
@@ -59,28 +62,33 @@ public class PlatformCreator : MonoBehaviour {
 			return;
 		}
 
-		currentOffset += offset;
+		currentOffset = guardFloat ? currentOffset + offset : offset;
 
-		// Nudge everything but the platform
-		Transform[] allObjects = FindObjectsOfType<Transform> ();
-		foreach (Transform t in allObjects) {
-			if (t.parent != null || t == transform) {
-				continue;
+		if (guardFloat) {
+			// Nudge everything but the platform
+			Transform[] allObjects = FindObjectsOfType<Transform> ();
+			foreach (Transform t in allObjects) {
+				if (t.parent != null || t == transform) {
+					continue;
+				}
+
+				Vector3 newPos = t.position;
+				newPos.z -= offset;
+				t.position = newPos;
 			}
-
-			Vector3 newPos = t.position;
-			newPos.z -= offset;
-			t.position = newPos;
 		}
 
 		// Nudge pieces in platform
 		List<Transform> toDelete = new List<Transform> ();
 		foreach (Transform t in renderedPieces.ToArray()) {
-			Vector3 newPos = t.localPosition;
-			newPos.z -= offset;
-			t.localPosition = newPos;
+			if (guardFloat) {
+				Vector3 newPos = t.localPosition;
+				newPos.z -= offset;
+				t.localPosition = newPos;
+			}
 
-			if (t.position.z > 0) {
+
+			if (t.position.z > cameraTransform.position.z) {
 				DestroyPiece (t);
 			}
 		}
