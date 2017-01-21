@@ -4,10 +4,10 @@ using UnityEngine;
 
 public class OoLaLaWaves : MonoBehaviour {
 
-	int maxBlocks = 50;
-	int startEffectFrom = 10;
-	float amplitude = 5.0f;
-	float spread = 10.0f;
+	public int maxBlocks = 50;
+	public int startEffectFrom = 10;
+	public float amplitude = 5.0f;
+	public float spread = 10.0f;
 	
 	void Update () {
 		Vector3 parentLocalPosition = transform.parent.localPosition;
