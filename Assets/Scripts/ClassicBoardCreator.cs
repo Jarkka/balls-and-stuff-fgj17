@@ -5,7 +5,7 @@ using UnityEngine;
 public class ClassicBoardCreator : PlatformCreator {
 
 	// Use this for initialization
-	public void Start () {
+	new public void Start () {
 		base.Start ();
 		Vector3 currentPosition = this.transform.position;
 		float startX = currentPosition.x - (widthNumPieces * 0.5f);
