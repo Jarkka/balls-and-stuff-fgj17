@@ -13,7 +13,7 @@ public class BoardController : MonoBehaviour {
 	}
 
 	void FixedUpdate () {
-		RotateFromInput ("Horizontal", -Vector3.forward);
+		RotateFromInput ("Horizontal", Vector3.forward);
 		if (!this.enableVertical) {
 			return;
 		}
