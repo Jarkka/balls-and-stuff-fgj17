@@ -13,6 +13,9 @@ public class BallPusher : MonoBehaviour {
 	}
 
 	void FixedUpdate () {
-		this.myRigidbody.AddForce (Vector3.forward * -(this.constantPushForce + (Time.frameCount * 0.0001f)));
+		//this.myRigidbody.AddForce (Vector3.forward * -(this.constantPushForce + (Time.frameCount * 0.0001f)));
+		Vector3 newVelocity = myRigidbody.velocity;
+		newVelocity.z = -this.constantPushForce;
+		myRigidbody.velocity = newVelocity;
 	}
 }
