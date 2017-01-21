@@ -19,10 +19,12 @@ public class PlatformPieceController : MonoBehaviour {
 	public void ActivateLight(PlatformLight platformLight) {
 		switch (platformLight) {
 		case PlatformLight.Left:
+			rightLightObject.SetActive (true);
 			leftLightObject.SetActive (false);
 			break;
 
 		case PlatformLight.Right:
+			leftLightObject.SetActive (true);
 			rightLightObject.SetActive (false);
 			break;
 		}
