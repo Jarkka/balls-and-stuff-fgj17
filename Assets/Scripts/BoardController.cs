@@ -5,6 +5,7 @@ using UnityEngine;
 public class BoardController : MonoBehaviour {
 
 	float[] xLimits = new float[2] { -0.2f, 0.2f };
+	Vector3 rotation = Vector3.zero;
 
 	public bool enableVertical = false;
 
@@ -38,6 +39,7 @@ public class BoardController : MonoBehaviour {
 	}
 
 	void RotateBoard(Vector3 axisValue) {
-		transform.Rotate(axisValue);
+		this.rotation += axisValue;
+		transform.localEulerAngles = this.rotation;
 	}
 }
