@@ -8,9 +8,7 @@ public class BallDestroyer : MonoBehaviour {
 			GameObject.Destroy (c.collider.gameObject);
 
 			if (Object.FindObjectsOfType<BallPusher> ().Length == 1) {
-				Debug.Log ("Game over!");
-				Debug.Log ("Press 'r' to restart");
-				Time.timeScale = 0;
+				GetComponent<PauseGame> ().OnButtonClick ();
 			}
 		}
 	}

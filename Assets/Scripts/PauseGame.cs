@@ -8,6 +8,7 @@ public class PauseGame : MonoBehaviour {
 	public UnityEngine.UI.MaskableGraphic[] fadeTheseOut;
 	public UnityEngine.UI.MaskableGraphic[] fadeTheseIn;
 	public UnityEngine.UI.Button[] buttons;
+	public UnityEngine.UI.Button[] disableButtons;
 
 	public void Awake() {
 		foreach (UnityEngine.UI.MaskableGraphic r in fadeTheseIn) {
@@ -42,6 +43,9 @@ public class PauseGame : MonoBehaviour {
 			}
 			foreach (UnityEngine.UI.MaskableGraphic r in fadeTheseIn) {
 				r.CrossFadeAlpha (1.0f, 0.6f, true);
+			}
+			foreach (UnityEngine.UI.Button r in disableButtons) {
+				r.interactable = false;
 			}
 		}
 
