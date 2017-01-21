@@ -13,6 +13,12 @@ public class BoardController : MonoBehaviour {
 		// Do da start
 	}
 
+	void Update () {
+		if (Input.GetKeyDown (KeyCode.Escape)) {
+			Application.Quit();
+		}
+	}
+
 	void FixedUpdate () {
 		RotateFromInput ("Horizontal", Vector3.forward);
 		if (!this.enableVertical) {
