@@ -4,9 +4,10 @@ using UnityEngine;
 
 public class GameStarter : MonoBehaviour {
 	public bool fromInput = true;
+	public bool startingPrevented = true;
 
 	void Update () {
-		if (fromInput && Input.anyKeyDown) {
+		if (!startingPrevented && fromInput && Input.anyKeyDown) {
 			StartGame ();
 		}
 	}

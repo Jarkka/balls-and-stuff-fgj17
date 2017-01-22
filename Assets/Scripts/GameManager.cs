@@ -7,6 +7,7 @@ public class GameManager : MonoBehaviour {
 	public GameObject musicPlayer;
 	public bool escQuitsGame;
 	public PauseGame pauseGame;
+	public GameObject pauseButton;
 	public bool gameIsOver;
 
 	void Start () {
@@ -26,6 +27,7 @@ public class GameManager : MonoBehaviour {
 	}
 
 	public void GameLost() {
+		pauseButton.SetActive (false);
 		gameIsOver = true;
 	}
 }
