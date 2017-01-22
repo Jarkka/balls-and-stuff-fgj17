@@ -68,9 +68,9 @@ public class PlatformCreator : MonoBehaviour {
 
 				PlatformPieceController platformPieceController = newPiece.gameObject.GetComponent<PlatformPieceController> ();
 		
-				if (x == 0) {
+				if (x == 0 || NotInStartArea(x,z) && RandomHole (x-1, z)) {
 					platformPieceController.ActivateLight (PlatformLight.Left);
-				} else if (x == floorWidthPieces - 1) {
+				} else if (x == floorWidthPieces - 1 || NotInStartArea(x,z) && RandomHole (x+1, z)) {
 					platformPieceController.ActivateLight (PlatformLight.Right);
 				} else {
 					platformPieceController.ResetLights ();
