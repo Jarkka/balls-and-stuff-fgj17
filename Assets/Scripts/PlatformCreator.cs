@@ -67,13 +67,19 @@ public class PlatformCreator : MonoBehaviour {
 				newPiece.SetParent (this.transform);
 
 				PlatformPieceController platformPieceController = newPiece.gameObject.GetComponent<PlatformPieceController> ();
-		
+
+				platformPieceController.ResetLights ();
 				if (x == 0 || NotInStartArea(x,z) && RandomHole (x-1, z)) {
 					platformPieceController.ActivateLight (PlatformLight.Left);
-				} else if (x == floorWidthPieces - 1 || NotInStartArea(x,z) && RandomHole (x+1, z)) {
+				}
+				if (x == floorWidthPieces - 1 || NotInStartArea(x,z) && RandomHole (x+1, z)) {
 					platformPieceController.ActivateLight (PlatformLight.Right);
-				} else {
-					platformPieceController.ResetLights ();
+				}
+				if (z >= lastBlockRenderEnded + 1 && NotInStartArea(x,z) && RandomHole (x, z - 1)) {
+					platformPieceController.ActivateLight (PlatformLight.Bottom);
+				}
+				if (z < lastBlockRenderEnded + currentPieceCombination.Length - 1 && NotInStartArea(x,z) && RandomHole (x, z + 1)) {
+					platformPieceController.ActivateLight (PlatformLight.Top);
 				}
 
 				int guardFloatOffset = guardFloat ? currentOffset : 0;
