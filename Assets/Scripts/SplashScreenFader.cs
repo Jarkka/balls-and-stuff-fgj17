@@ -12,6 +12,7 @@ public class SplashScreenFader : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		myImage = gameObject.GetComponent<Image> ();
+		myImage.enabled = true;
 
 		if (!splashScreenShown) {
 			StartCoroutine (FadeSplash ());
