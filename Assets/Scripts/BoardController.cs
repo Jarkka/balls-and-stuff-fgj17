@@ -32,6 +32,7 @@ public class BoardController : MonoBehaviour {
 		float hor = Input.GetAxis (input);
 		if (hor != 0) {
 			float doRotate = 0;
+
 			if (hor > 0 && gameObject.transform.localRotation.z < xLimits [1]) {
 				doRotate = 1;
 			}
@@ -41,6 +42,12 @@ public class BoardController : MonoBehaviour {
 			}
 
 			RotateBoard (hor * doRotate * axis);
+
+			GameObject ball = GameObject.FindGameObjectWithTag ("DasBall");
+			if (ball) {
+				BallPusher ballPusher = ball.GetComponent<BallPusher> ();
+				ballPusher.boardXExtraForce = -hor * 0.05f;
+			}
 		}
 	}
 

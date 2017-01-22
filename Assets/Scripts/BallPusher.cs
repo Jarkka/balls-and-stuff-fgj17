@@ -5,6 +5,7 @@ using UnityEngine;
 public class BallPusher : MonoBehaviour {
 
 	public float constantPushForce = 5;
+	public float boardXExtraForce;
 
 	private Rigidbody myRigidbody;
 
@@ -16,6 +17,7 @@ public class BallPusher : MonoBehaviour {
 		//this.myRigidbody.AddForce (Vector3.forward * -(this.constantPushForce + (Time.frameCount * 0.0001f)));
 		Vector3 newVelocity = myRigidbody.velocity;
 		newVelocity.z = -this.constantPushForce;
+		newVelocity.x = newVelocity.x + boardXExtraForce;
 		myRigidbody.velocity = newVelocity;
 	}
 }
