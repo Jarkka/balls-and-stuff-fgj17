@@ -14,10 +14,15 @@ public class PlatformCreator : MonoBehaviour {
 
 	public UnityEngine.UI.Text pointsText;
 
+	public TextAsset[] pieceCombinations;
+
 	private List<Transform> renderedPieces = new List<Transform>();
 	private List<Transform> idlePieces = new List<Transform>();
 	private int currentOffset = 0;
 	private int renderedUntil = -1;
+	private int lastBlockRenderEnded = 0;
+
+	private string[] currentPieceCombination = new string[]{};
 
 	public void Start () {
 		transform.localEulerAngles = Vector3.forward * 0.5f; // Fixes flickering in the start
@@ -30,8 +35,19 @@ public class PlatformCreator : MonoBehaviour {
 		return z > 10;
 	}
 
-	bool RandomHole(int z) {
-		return !noHoles && Random.Range (0.0f, 1.0f) < z * 0.001f;
+	bool RandomHole(int x, int z) {
+		if (noHoles)
+			return false;
+
+		int index = z - lastBlockRenderEnded;
+		if (index >= currentPieceCombination.Length) {
+			lastBlockRenderEnded = z;
+			currentPieceCombination = pieceCombinations [Random.Range (0, pieceCombinations.Length)].text.Split('\n');
+			return RandomHole (x, z);
+		}
+
+		int reverse = currentPieceCombination.Length - 1 - index;
+		return currentPieceCombination [reverse][floorWidthPieces-1-x] == ' ' ? true : false;
 	}
 
 	// Render new pieces for the platform
@@ -43,7 +59,7 @@ public class PlatformCreator : MonoBehaviour {
 
 		for (int z = Mathf.Max(renderedUntil + 1, from); z < to; z++) {
 			for (int x = 0; x < floorWidthPieces; x++) {
-				if (NotInStartArea (x, z) && RandomHole (z)) {
+				if (NotInStartArea (x, z) && RandomHole (x, z)) {
 					continue;
 				}
 
