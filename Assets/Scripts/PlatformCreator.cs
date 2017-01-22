@@ -6,6 +6,7 @@ public class PlatformCreator : MonoBehaviour {
 
 	public Transform floorPrefab;
 	public Transform jumpPrefab;
+	public Transform elevatedPrefab;
 
 	public int floorWidthPieces = 10;
 	public int renderFloorForwardPieces = 50;
@@ -178,6 +179,8 @@ public class PlatformCreator : MonoBehaviour {
 				return floorPrefab;
 			case '1':
 				return jumpPrefab;
+			case '2':
+				return elevatedPrefab;
 			default:
 				return floorPrefab;
 		}
