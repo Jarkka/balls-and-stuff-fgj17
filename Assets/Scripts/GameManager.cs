@@ -5,10 +5,27 @@ using UnityEngine;
 public class GameManager : MonoBehaviour {
 
 	public GameObject musicPlayer;
+	public bool escQuitsGame;
+	public PauseGame pauseGame;
+	public bool gameIsOver;
 
 	void Start () {
 		if (GameObject.FindGameObjectWithTag ("MusicPlayer") == null) {
 			Instantiate (musicPlayer, transform.position, transform.rotation);
 		}
+	}
+
+	void Update() {
+		if (!gameIsOver && Input.GetKeyDown (KeyCode.Escape)) {
+			if (escQuitsGame) {
+				Application.Quit();
+			} else if (pauseGame != null) {
+				pauseGame.OnButtonClick ();
+			}
+		}
+	}
+
+	public void GameLost() {
+		gameIsOver = true;
 	}
 }
