@@ -17,6 +17,7 @@ public class PlatformCreator : MonoBehaviour {
 
 	public TextAsset[] pieceCombinations;
 
+	private GameManager gameManager;
 
 	private Dictionary<char, List<Transform>> renderedPieces = new Dictionary<char, List<Transform>>();
 	private Dictionary<char, List<Transform>> idlePieces = new Dictionary<char, List<Transform>>();
@@ -30,6 +31,7 @@ public class PlatformCreator : MonoBehaviour {
 		transform.localEulerAngles = Vector3.forward * 0.5f; // Fixes flickering in the start
 		InvokeRepeating ("ResetCameraPosition", 0.3f, 0.3f);
 		RenderPlatformPieces (0, renderFloorForwardPieces);
+		gameManager = GameObject.FindObjectOfType<GameManager> ();
 	}
 
 	// Determine if hole or not
@@ -113,7 +115,9 @@ public class PlatformCreator : MonoBehaviour {
 
 		currentOffset = guardFloat ? currentOffset + offset : offset;
 
+
 		pointsText.text = currentOffset * -17 + "";
+		gameManager.currentScore = currentOffset * -17;
 
 		if (guardFloat) {
 			// Nudge everything but the platform
@@ -130,8 +134,6 @@ public class PlatformCreator : MonoBehaviour {
 		}
 
 		// Nudge pieces in platform
-		List<Transform> toDelete = new List<Transform> ();
-
 		foreach (KeyValuePair<char, List<Transform>> l in renderedPieces) {
 			foreach (Transform t in l.Value.ToArray()) {
 				if (guardFloat) {

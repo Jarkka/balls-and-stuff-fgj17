@@ -11,6 +11,8 @@ public class GameManager : MonoBehaviour {
 	public bool gameIsOver;
 	public bool hideCursorOnStart = false;
 
+	public int currentScore = 0;
+
 	void Start () {
 		if (GameObject.FindGameObjectWithTag ("MusicPlayer") == null) {
 			Instantiate (musicPlayer, transform.position, transform.rotation);
@@ -32,6 +34,11 @@ public class GameManager : MonoBehaviour {
 	}
 
 	public void GameLost() {
+		int lastLocalHighscore = PlayerPrefs.GetInt("local-highscore", 0);
+		if (currentScore > lastLocalHighscore) {
+			lastLocalHighscore = currentScore;
+			PlayerPrefs.SetInt ("local-highscore", currentScore);
+		}
 		pauseButton.SetActive (false);
 		gameIsOver = true;
 	}
