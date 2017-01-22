@@ -40,6 +40,8 @@ public class PauseGame : MonoBehaviour {
 			foreach (MaskableGraphic r in fadeTheseIn) {
 				r.CrossFadeAlpha (0.0f, tweenTime, true);
 			}
+
+			Cursor.visible = false;
 		} else {
 			Time.timeScale = 0;
 			Camera.main.GetComponent<Animator> ().CrossFade("PauseMenuBlur", tweenTime);
@@ -57,6 +59,8 @@ public class PauseGame : MonoBehaviour {
 				r.interactable = false;
 				r.GetComponent<Image> ().raycastTarget = false;
 			}
+
+			Cursor.visible = true;
 		}
 
 		UpdateButtonImage ();

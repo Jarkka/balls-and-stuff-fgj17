@@ -9,10 +9,15 @@ public class GameManager : MonoBehaviour {
 	public PauseGame pauseGame;
 	public GameObject pauseButton;
 	public bool gameIsOver;
+	public bool hideCursorOnStart = false;
 
 	void Start () {
 		if (GameObject.FindGameObjectWithTag ("MusicPlayer") == null) {
 			Instantiate (musicPlayer, transform.position, transform.rotation);
+		}
+
+		if (hideCursorOnStart) {
+			Cursor.visible = false;
 		}
 	}
 
