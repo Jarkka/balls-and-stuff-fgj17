@@ -11,7 +11,7 @@ public class BallPusher : MonoBehaviour {
 	private SoundController soundController;
 	private float startMagnitude;
 
-	private float crashThreshold = 3;
+	private float crashThreshold = 4;
 
 	void Awake() {
 		this.myRigidbody = this.GetComponent<Rigidbody> ();
