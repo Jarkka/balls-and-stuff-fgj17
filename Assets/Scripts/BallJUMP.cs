@@ -10,6 +10,8 @@ public class BallJUMP : MonoBehaviour {
 			if (r.velocity.y < 5) {
 				r.velocity += Vector3.up * 10.0f;
 
+				c.gameObject.GetComponent<BallPusher> ().SpawnHitParticles ();
+
 				SoundController soundController = GameObject.FindObjectOfType<SoundController> ();
 				soundController.PlayBallJumpSoundAtPosition (c.gameObject.transform.position);
 			}

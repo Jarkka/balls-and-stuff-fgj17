@@ -6,6 +6,7 @@ public class BallPusher : MonoBehaviour {
 
 	public float constantPushForce = 5;
 	public float boardXExtraForce;
+	public GameObject hitParticles;
 
 	private Rigidbody myRigidbody;
 	private SoundController soundController;
@@ -24,6 +25,7 @@ public class BallPusher : MonoBehaviour {
 	void OnCollisionEnter(Collision c) {
 		if (c.impulse.sqrMagnitude > 50) {
 			soundController.PlayBallHitSoundAtPosition (transform.position);
+			SpawnHitParticles ();
 		}
 	}
 
@@ -33,5 +35,9 @@ public class BallPusher : MonoBehaviour {
 		newVelocity.z = -this.constantPushForce;
 		newVelocity.x = newVelocity.x + boardXExtraForce;
 		myRigidbody.velocity = newVelocity;
+	}
+
+	public void SpawnHitParticles () {
+		Instantiate (hitParticles, transform.position, hitParticles.transform.rotation, transform.parent);
 	}
 }
