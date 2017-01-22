@@ -5,6 +5,7 @@ using UnityEngine;
 public class PlatformCreator : MonoBehaviour {
 
 	public Transform floorPrefab;
+	public Transform jumpPrefab;
 
 	public int floorWidthPieces = 10;
 	public int renderFloorForwardPieces = 50;
@@ -16,8 +17,9 @@ public class PlatformCreator : MonoBehaviour {
 
 	public TextAsset[] pieceCombinations;
 
-	private List<Transform> renderedPieces = new List<Transform>();
-	private List<Transform> idlePieces = new List<Transform>();
+
+	private Dictionary<char, List<Transform>> renderedPieces = new Dictionary<char, List<Transform>>();
+	private Dictionary<char, List<Transform>> idlePieces = new Dictionary<char, List<Transform>>();
 	private int currentOffset = 0;
 	private int renderedUntil = -1;
 	private int lastBlockRenderEnded = 0;
@@ -38,16 +40,27 @@ public class PlatformCreator : MonoBehaviour {
 	bool RandomHole(int x, int z) {
 		if (noHoles)
 			return false;
+		
+		return GetPieceType (x, z) == ' ';
+	}
+
+	char GetPieceType(int x, int z) {
+		if (noHoles)
+			return ' ';
+
+		if (!NotInStartArea (x, z)) {
+			return '0';
+		}
 
 		int index = z - lastBlockRenderEnded;
 		if (index >= currentPieceCombination.Length) {
 			lastBlockRenderEnded = z;
 			currentPieceCombination = pieceCombinations [Random.Range (0, pieceCombinations.Length)].text.Split('\n');
-			return RandomHole (x, z);
+			return GetPieceType (x, z);
 		}
 
 		int reverse = currentPieceCombination.Length - 1 - index;
-		return currentPieceCombination [reverse][floorWidthPieces-1-x] == ' ' ? true : false;
+		return currentPieceCombination [reverse][floorWidthPieces-1-x];
 	}
 
 	// Render new pieces for the platform
@@ -63,7 +76,7 @@ public class PlatformCreator : MonoBehaviour {
 					continue;
 				}
 
-				Transform newPiece = GetNewPiece();
+				Transform newPiece = GetNewPiece(GetPieceType(x, z));
 				newPiece.SetParent (this.transform);
 
 				PlatformPieceController platformPieceController = newPiece.gameObject.GetComponent<PlatformPieceController> ();
@@ -118,16 +131,19 @@ public class PlatformCreator : MonoBehaviour {
 
 		// Nudge pieces in platform
 		List<Transform> toDelete = new List<Transform> ();
-		foreach (Transform t in renderedPieces.ToArray()) {
-			if (guardFloat) {
-				Vector3 newPos = t.localPosition;
-				newPos.z -= offset;
-				t.localPosition = newPos;
-			}
+
+		foreach (KeyValuePair<char, List<Transform>> l in renderedPieces) {
+			foreach (Transform t in l.Value.ToArray()) {
+				if (guardFloat) {
+					Vector3 newPos = t.localPosition;
+					newPos.z -= offset;
+					t.localPosition = newPos;
+				}
 
 
-			if (t.position.z > cameraTransform.position.z) {
-				DestroyPiece (t);
+				if (t.position.z > cameraTransform.position.z) {
+					DestroyPiece (t);
+				}
 			}
 		}
 
@@ -135,23 +151,45 @@ public class PlatformCreator : MonoBehaviour {
 	}
 
 	// Single piece lifecycle, should probaly refactor these to their own objet at some point
-	private Transform GetNewPiece() {
+	private Transform GetNewPiece(char pieceType) {
 		Transform newPiece;
 
-		if (idlePieces.Count == 0) {
-			newPiece = GameObject.Instantiate (floorPrefab);
+		if (!idlePieces.ContainsKey(pieceType) || idlePieces[pieceType].Count == 0) {
+			newPiece = GameObject.Instantiate (PrefabForPieceType(pieceType));
+			newPiece.gameObject.name = pieceType.ToString();
 		} else {
-			newPiece = idlePieces [idlePieces.Count - 1];
-			idlePieces.RemoveAt(idlePieces.Count - 1);
+			newPiece = idlePieces[pieceType] [idlePieces[pieceType].Count - 1];
+			idlePieces[pieceType].RemoveAt(idlePieces[pieceType].Count - 1);
 			newPiece.GetComponentInChildren<Renderer> ().enabled = true;
 		}
-		renderedPieces.Add (newPiece);
+
+		if (!renderedPieces.ContainsKey(pieceType)) {
+			renderedPieces [pieceType] = new List<Transform> ();
+		}
+		renderedPieces [pieceType].Add (newPiece);
 		return newPiece;
 	}
 
+	Transform PrefabForPieceType(char pieceType) {
+		switch (pieceType) {
+			case '0':
+				return floorPrefab;
+			case '1':
+				return jumpPrefab;
+			default:
+				return floorPrefab;
+		}
+	}
+
 	private void DestroyPiece(Transform piece) {
-		renderedPieces.Remove (piece);
-		idlePieces.Add (piece);
+		char pieceType = piece.gameObject.name [0];
+
+		if (!idlePieces.ContainsKey(pieceType)) {
+			idlePieces [pieceType] = new List<Transform> ();
+		}
+
+		renderedPieces[pieceType].Remove (piece);
+		idlePieces[pieceType].Add (piece);
 		piece.GetComponentInChildren<Renderer> ().enabled = false;
 	}
 }
