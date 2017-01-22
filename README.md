@@ -1,7 +1,7 @@
 # Skyballs Deluxe
 > A Global Game Jam game by Jarkka Salminen and Jesse Luoto
 
-Shoot for the stars and take the Skyball Deluxe challenge to guide your space
+Shoot for the stars and take the Skyballs Deluxe challenge to guide your space
 ball through hyperspace platforms!
 
 ## Play now!
