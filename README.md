@@ -27,6 +27,8 @@ Who would not want to guide a ball through a range of platforms?
 * Sounds
 * Particle effects
 
+This game has been made as a part of the 2017 Finnish Game Jam / Global Game Jam
+
 ## Licensing
 
 This game has been licensed with [Creative Commons Attribution-Noncommercial-Share Alike 3.0 license](https://creativecommons.org/licenses/by-nc-sa/3.0/).
