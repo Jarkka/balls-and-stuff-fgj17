@@ -9,19 +9,22 @@ public class BallPusher : MonoBehaviour {
 
 	private Rigidbody myRigidbody;
 	private SoundController soundController;
-	private float startMagnitude;
 
 	private float crashThreshold = 4;
 
 	void Awake() {
 		this.myRigidbody = this.GetComponent<Rigidbody> ();
-
-		startMagnitude = myRigidbody.velocity.sqrMagnitude;
 		crashThreshold *= crashThreshold; 
 	}
 
 	void Start() {
 		soundController = GameObject.FindObjectOfType<SoundController> ();
+	}
+
+	void OnCollisionEnter(Collision c) {
+		if (c.impulse.sqrMagnitude > 50) {
+			soundController.PlayBallHitSoundAtPosition (transform.position);
+		}
 	}
 
 	void FixedUpdate () {
@@ -30,11 +33,5 @@ public class BallPusher : MonoBehaviour {
 		newVelocity.z = -this.constantPushForce;
 		newVelocity.x = newVelocity.x + boardXExtraForce;
 		myRigidbody.velocity = newVelocity;
-
-		if (startMagnitude - myRigidbody.velocity.sqrMagnitude > crashThreshold) {
-			soundController.PlayBallHitSoundAtPosition (transform.position);		
-		}
-
-		startMagnitude = myRigidbody.velocity.sqrMagnitude;
 	}
 }
