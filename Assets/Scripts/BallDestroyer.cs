@@ -11,12 +11,17 @@ public class BallDestroyer : MonoBehaviour {
 
 	void OnCollisionEnter (Collision c) {
 		if (c.collider.gameObject.GetComponent<BallPusher> () != null) {
-			GameObject.Destroy (c.collider.gameObject);
+			StartCoroutine(DestroyGameObjectWithDelay (c.collider.gameObject));
+		}
+	}
 
-			if (Object.FindObjectsOfType<BallPusher> ().Length == 1) {
-				gameObject.GetComponent<PauseGame> ().OnButtonClick ();
-				gameManager.GameLost ();
-			}
+	IEnumerator DestroyGameObjectWithDelay(GameObject obj) {
+		yield return new WaitForSeconds(0.1f);
+		GameObject.Destroy (obj);
+
+		if (Object.FindObjectsOfType<BallPusher> ().Length == 1) {
+			gameObject.GetComponent<PauseGame> ().OnButtonClick ();
+			gameManager.GameLost ();
 		}
 	}
 }
