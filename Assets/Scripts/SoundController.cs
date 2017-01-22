@@ -6,6 +6,7 @@ public class SoundController : MonoBehaviour {
 
 	public AudioSource musicSource;
 	public GameObject ballHitSoundObject;
+	public GameObject jumpSoundObject;
 	private bool canPlaySounds = false;
 
 	void Start () {
@@ -16,6 +17,12 @@ public class SoundController : MonoBehaviour {
 	public void PlayBallHitSoundAtPosition (Vector3 position) {
 		if (canPlaySounds) {
 			Instantiate (ballHitSoundObject, position, ballHitSoundObject.transform.rotation, transform);
+		}
+	}
+
+	public void PlayBallJumpSoundAtPosition (Vector3 position) {
+		if (canPlaySounds) {
+			Instantiate (jumpSoundObject, position, jumpSoundObject.transform.rotation, transform);
 		}
 	}
 

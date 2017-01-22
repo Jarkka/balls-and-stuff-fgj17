@@ -9,6 +9,9 @@ public class BallJUMP : MonoBehaviour {
 			Rigidbody r = c.gameObject.GetComponent<Rigidbody> ();
 			if (r.velocity.y < 5) {
 				r.velocity += Vector3.up * 10.0f;
+
+				SoundController soundController = GameObject.FindObjectOfType<SoundController> ();
+				soundController.PlayBallJumpSoundAtPosition (c.gameObject.transform.position);
 			}
 		}
 	}
