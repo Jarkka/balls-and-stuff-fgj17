@@ -6,7 +6,7 @@ public class SoundController : MonoBehaviour {
 
 	public AudioSource musicSource;
 	public GameObject ballHitSoundObject;
-	public bool canPlaySounds = false;
+	private bool canPlaySounds = false;
 
 	void Start () {
 		musicSource.volume = 0;
